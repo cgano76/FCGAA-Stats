@@ -3,9 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "main": "serve-interface.mjs",
   "scripts": {
     "start": "node serve-interface.mjs",
     "check": "node --check serve-interface.mjs"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
   },
   "engines": {
     "node": "22.x"
