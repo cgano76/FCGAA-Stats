@@ -1,0 +1,13 @@
+{
+  "name": "fcgaa-stats-interface",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node serve-interface.mjs",
+    "check": "node --check serve-interface.mjs"
+  },
+  "engines": {
+    "node": "22.x"
+  }
+}

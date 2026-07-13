@@ -1,0 +1,54 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-fcgaa_stats}
+      POSTGRES_USER: ${POSTGRES_USER:-fcgaa}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-fcgaa_local_password}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infra/postgres-init.sql:/docker-entrypoint-initdb.d/001-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-fcgaa} -d ${POSTGRES_DB:-fcgaa_stats}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+    environment:
+      APP_ENV: ${APP_ENV:-local}
+      APP_NAME: ${APP_NAME:-FCGAA Stats}
+      SECRET_KEY: ${SECRET_KEY:-change-me-local-secret}
+      DATABASE_URL: ${DATABASE_URL:-postgresql+psycopg://fcgaa:fcgaa_local_password@postgres:5432/fcgaa_stats}
+      STORAGE_ROOT: /app/storage
+      MISTRAL_API_KEY: ${MISTRAL_API_KEY:-}
+      MISTRAL_MODEL: ${MISTRAL_MODEL:-mistral-large-latest}
+      AI_EXTERNAL_RESEARCH_ENABLED: ${AI_EXTERNAL_RESEARCH_ENABLED:-false}
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/app:/app/app
+      - ./storage:/app/storage
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000}
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

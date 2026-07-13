@@ -1,0 +1,2 @@
+"""Application FCGAA Stats."""
+

@@ -1,0 +1,17 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+node_modules/
+.next/
+dist/
+build/
+storage/
+uploads/
+storage/imports/*
+!storage/imports/.gitkeep
+*.log
+.interface-server-port
+interface-server*.log
