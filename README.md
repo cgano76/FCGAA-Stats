@@ -91,6 +91,23 @@ Regles d'export :
 
 Les valeurs extraites restent candidates : aucune donnee n'est consideree validee sans action humaine.
 
+## Deploiement Hostinger
+
+Le projet est prepare pour Hostinger en deux modes :
+
+- `Node.js Web App` : mode recommande pour conserver les API locales, l'import et l'analyse IA cote serveur ;
+- `public_html` statique : mode demonstration HTML uniquement, sans extraction PDF/TXT ni appel OpenAI securise.
+
+Guide detaille :
+
+- [HOSTINGER_DEPLOY.md](HOSTINGER_DEPLOY.md)
+
+Creation d'une archive propre :
+
+```powershell
+.\scripts\prepare_hostinger_zip.ps1
+```
+
 ## Structure
 
 - `frontend/` : interface Next.js/React en francais.
